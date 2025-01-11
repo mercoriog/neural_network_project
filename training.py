@@ -1,6 +1,6 @@
 
 # Define a function to train the model
-def training(model):
+def training(model, X_train, y_train, X_valid, y_valid):
     # To train the model, we call the fit() method in Keras.
     # Parameters:
     #   - X_train: Training dataset (input features)
