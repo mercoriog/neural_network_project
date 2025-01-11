@@ -1,3 +1,4 @@
 tensorflow-datasets
 tensorflow
 matplotlib
+seaborn
