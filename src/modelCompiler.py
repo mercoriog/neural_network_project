@@ -2,7 +2,7 @@ from tensorflow.python.keras import Sequential
 from tensorflow.python.layers import Dense, Dropout, LeakyReLU
 
 # Define a function to create the model
-def model(num_layers, num_neurons, func_activation, X_train):
+def model(hidden_num_layers, num_neurons, func_activation, X_train):
     # Instantiate the Sequential model
     model = Sequential()
     
@@ -10,7 +10,7 @@ def model(num_layers, num_neurons, func_activation, X_train):
     model.add(Dense(128, activation='relu', input_shape=(X_train.shape[1],)))
     
      # Add hidden layers with the specified activation function
-    for i in range(num_layers):
+    for i in range(hidden_num_layers):
         if func_activation == 'leaky_relu':
             model.add(Dense(num_neurons))
             model.add(LeakyReLU(alpha=0.1))  # Leaky ReLU with alpha=0.1
@@ -35,3 +35,4 @@ def modelCompile(model):
         loss="categorical_crossentropy",  # Loss function for multi-class classification
         metrics=["accuracy"],  # Metric to monitor during training
     )
+    return model
