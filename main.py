@@ -2,7 +2,6 @@ from src import predicter
 from src import datasetLoader as dsLoad
 from src import datasetPreprocessing as dsPrep
 from src import trainer
-from src import plotsResults as pltRes
 from src import confusionMatrix as confMx
 from src import modelCompiler as compiler
 

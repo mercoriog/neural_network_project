@@ -37,7 +37,7 @@ def preprocessDataset(X_train, X_test, X_valid):
 # - Used to make the labels compatible with classification models.
 # In case of an error, returns None.
 def oneHotLabelEncoding(Y_train, Y_test, Y_valid):
-     try:
+    try:
         Y_train = to_categorical(Y_train, NUM_CLASSESS)
         Y_test = to_categorical(Y_test, NUM_CLASSESS)
         Y_valid = to_categorical(Y_valid, NUM_CLASSESS)

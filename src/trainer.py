@@ -1,4 +1,4 @@
-from plotsResults import plotResults
+from .plotsResults import plotResults
 
 def startTraining(model, X_train, y_train, X_valid, y_valid):
     # To train the model, we call the fit() method in Keras.
