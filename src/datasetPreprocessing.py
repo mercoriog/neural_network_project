@@ -1,5 +1,4 @@
-import numpy as np
-import tensorflow_datasets as tfds
+import tensorflow as tf
 
 NUM_CLASSESS = 10
 IMG_SET_DIM = 28
@@ -38,9 +37,9 @@ def preprocessDataset(X_train, X_test, X_valid):
 # In case of an error, returns None.
 def oneHotLabelEncoding(Y_train, Y_test, Y_valid):
     try:
-        Y_train = to_categorical(Y_train, NUM_CLASSESS)
-        Y_test = to_categorical(Y_test, NUM_CLASSESS)
-        Y_valid = to_categorical(Y_valid, NUM_CLASSESS)
+        Y_train = tf.keras.utils.to_categorical(Y_train, NUM_CLASSESS)
+        Y_test = tf.keras.utils.to_categorical(Y_test, NUM_CLASSESS)
+        Y_valid = tf.keras.utils.to_categorical(Y_valid, NUM_CLASSESS)
         return Y_train, Y_test, Y_valid
     except Exception as e:
         print(f"Error during one-hot encoding: {e}")

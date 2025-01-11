@@ -16,7 +16,7 @@ if __name__ == "__main__":
     y_train, y_test, y_valid = dsPrep.oneHotLabelEncoding(y_train, y_test, y_valid)
 
     # Define model:
-    model = compiler.model(1, 64, 'relu', X_train)
+    model = compiler.model(1, 64, "relu", X_train)
 
     # Compile model:
     model = compiler.modelCompile(model)
