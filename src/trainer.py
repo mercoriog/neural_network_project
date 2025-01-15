@@ -1,23 +1,9 @@
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, TensorDataset
 import torch.optim
 from .plotsResults import plotResults
 
-def startTraining(model, X_train, y_train, X_valid, y_valid, epochs=21, batch_size=64):
-    # Convert data
-    X_train = torch.tensor(X_train, dtype=torch.float32)
-    y_train = torch.tensor(y_train, dtype=torch.long)
-    X_valid = torch.tensor(X_valid, dtype=torch.float32)
-    y_valid = torch.tensor(y_valid, dtype=torch.long)
-
-    # Crea i DataLoader per il training e la validazione
-    train_dataset = TensorDataset(X_train, y_train)
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    
-    valid_dataset = TensorDataset(X_valid, y_valid)
-    valid_loader = DataLoader(valid_dataset, batch_size=batch_size, shuffle=False)
-
+def startTraining(model, train_loader, valid_loader, epochs=21):
     # Definisci la funzione di loss
     criterion = nn.CrossEntropyLoss()  # Usa CrossEntropyLoss per problemi di classificazione
 

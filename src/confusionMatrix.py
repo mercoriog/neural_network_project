@@ -1,41 +1,48 @@
 import torch
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import seaborn as sn
 
-def confusionMatrix(model, X_test, y_test):
-
-    # This function sets the model to evaluation mode. 
-    # This mode is crucial for ensuring consistent model behavior during prediction/inference.
+def confusionMatrix(model, test_loader):
+    """
+    Calcola e visualizza la matrice di confusione per un modello su un dataset di test.
+    
+    Args:
+        model (nn.Module): Il modello addestrato.
+        test_loader (DataLoader): Il DataLoader contenente il dataset di test.
+    """
+    # Imposta il modello in modalità di valutazione
     model.eval()
 
-    # PyTorch models only accept input in the torch.Tensor format. 
-    # If your data is in another format, it must be converted.
-    if not isinstance(X_test, torch.Tensor):
-        X_test = torch.tensor(X_test, dtype=torch.float32)
-    if not isinstance(y_test, torch.Tensor):
-        y_test = torch.tensor(y_test, dtype=torch.long)
+    # List per memorizzare le etichette vere e le previsioni
+    all_true_labels = []
+    all_predicted_labels = []
 
-    # During validation, gradients aren't needed because the model isn't being updated. 
-    # This also reduces memory consumption and increases speed.
+    # Disabilita il calcolo dei gradienti per l'inferenza
     with torch.no_grad():
-        # Generate predictions for the test dataset.
-        predictions = model(X_test)
+        for inputs, labels in test_loader:
+            # Effettua le previsioni
+            outputs = model(inputs)
+            _, predicted = torch.max(outputs, 1)  # Ottieni la classe predetta
 
-    # Determine the predicted class with the highest probability.
-    predicted_labels = torch.argmax(predictions, dim=1)
+            # Aggiungi le etichette vere e le previsioni alle liste
+            all_true_labels.extend(labels.tolist())
+            all_predicted_labels.extend(predicted.tolist())
 
-    # Create the confusion matrix.
-    cm = torch.zeros(len(torch.unique(y_test)), len(torch.unique(y_test)), dtype=torch.int32)
-    for true_label, pred_label in zip(y_test, predicted_labels):
+    # Crea la matrice di confusione
+    num_classes = len(torch.unique(torch.tensor(all_true_labels)))  # Numero di classi
+    cm = torch.zeros(num_classes, num_classes, dtype=torch.int32)
+
+    for true_label, pred_label in zip(all_true_labels, all_predicted_labels):
         cm[true_label, pred_label] += 1
 
-    # Convert the confusion matrix to a NumPy array.
+    # Converti la matrice di confusione in un array NumPy
     cm = cm.numpy()
 
-    # View Confusion Matrix.
+    # Visualizza la matrice di confusione
     plt.figure(figsize=(15, 8))
-    sn.heatmap(cm, annot=True, fmt="d", annot_kws={"size": 14})
+    sn.heatmap(cm, annot=True, fmt="d", annot_kws={"size": 14}, cmap="Blues")
     plt.xlabel("Predicted")
     plt.ylabel("Truth")
+    plt.title("Confusion Matrix")
     plt.show()

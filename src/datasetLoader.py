@@ -1,31 +1,32 @@
-import numpy as np
-import tensorflow_datasets as tfds
+import torch
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader, TensorDataset, random_split
 
 def loadDataset():
-    # Load the MNIST dataset (split into train and test sets)
-    return tfds.load('mnist', split=['train', 'test'], shuffle_files=True, as_supervised=True)
+    transform = transforms.Compose([
+        transforms.ToTensor(),  # Converte in tensore e normalizza in [0, 1]
+        transforms.Normalize((0.1307,), (0.3081,))  # Normalizza con media e deviazione standard di MNIST
+    ])
+    train_set = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+    test_set = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+    return train_set, test_set
 
 def extractValidationSet(train_set, valid_size=10000):
-    # Extract the first `valid_size` samples for the validation set
-    valid_set = train_set.take(valid_size)
-    # Keep the remaining samples for the training set
-    train_set = train_set.skip(valid_size)
+    train_size = len(train_set) - valid_size
+    train_set, valid_set = random_split(train_set, [train_size, valid_size])
     return train_set, valid_set
 
 def splitData(dataset):
-    # Split images and labels into separate arrays
     images = []
     labels = []
 
     for image, label in dataset:
-        # Append image data
-        images.append(image.numpy())
-        # Append label data
-        labels.append(label.numpy())
+        images.append(image)
+        labels.append(label)
     
-    # Convert lists to numpy arrays
-    X = np.array(images)
-    Y = np.array(labels)
+    # Stack tensors along the first dimension
+    X = torch.stack(images)
+    Y = torch.tensor(labels, dtype=torch.long)
 
     return X, Y
 
@@ -45,4 +46,14 @@ def getData():
     # Split images (X) and labels (Y) for the test set
     X_test, Y_test = splitData(test_set)
 
-    return X_train, Y_train, X_test, Y_test, X_valid, Y_valid
+    # Create TensorDatasets
+    train_dataset = TensorDataset(X_train, Y_train)
+    valid_dataset = TensorDataset(X_valid, Y_valid)
+    test_dataset = TensorDataset(X_test, Y_test)
+
+    # Create DataLoaders
+    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+    valid_loader = DataLoader(valid_dataset, batch_size=64, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+
+    return train_loader, valid_loader, test_loader
