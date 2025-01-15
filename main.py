@@ -15,19 +15,10 @@ if __name__ == "__main__":
     # Dataset Labels: One-hot encoding
     y_train, y_test, y_valid = dsPrep.oneHotLabelEncoding(y_train, y_test, y_valid)
 
-    # Esempio di utilizzo
-    input_shape = 128  # Dimensione dell'input
-    layer_sizes = [64, 32, 16, 8]  # Dimensioni dei layer
-    activation_functions = [F.relu, F.relu, F.relu, torch.sigmoid]  # Funzioni di attivazione
+    # Define model
+    model = compiler.DynamicModel(hidden_num_layers=1, num_neurons=64, func_activation="Relu", input_shape=X_train.shape[1])
 
-    # Crea il modello
-    model = compiler.DynamicModel(input_shape, layer_sizes, activation_functions)
-
-    # Stampo il modello
     print(model)
-
-    # Define model:
-    model = compiler.model(1, 64, "relu", X_train.shape[1])
 
     # Compile model:
     model = compiler.modelCompile(model)

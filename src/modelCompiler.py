@@ -2,6 +2,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+def getFunc(function):
+    if function == "relu":
+        return F.relu
+    elif function == "leaky_relu":
+        return F.leaky_relu
+    elif function == "tanh":
+        return F.tanh
+    else:
+        raise
+
 class DynamicModel(nn.Module):
     def __init__(self, hidden_num_layers, num_neurons, func_activation, input_shape):
         super(DynamicModel, self).__init__()
@@ -16,7 +26,7 @@ class DynamicModel(nn.Module):
             self.layers.append(nn.Linear(num_neurons, num_neurons))
         
         # Lista delle funzioni di attivazione
-        self.activation_function = func_activation
+        self.activation_function = getFunc(func_activation)
     
     def forward(self, x):
         i = 0
