@@ -1,25 +1,40 @@
-import tensorflow as tf
+import torch
 import numpy as np
 import matplotlib as plt
 import seaborn as sn
 
 def confusionMatrix(model, X_test, y_test):
-    # Generate predictions for the test dataset.
-    predictions = model.predict(X_test)
 
-    # For each sample image in the test dataset, select the class label with the highest probability.
-    predicted_labels = [np.argmax(i) for i in predictions]
+    # This function sets the model to evaluation mode. 
+    # This mode is crucial for ensuring consistent model behavior during prediction/inference.
+    model.eval()
 
-    # Convert one-hot encoded labels to integers.
-    y_test_integer_labels = tf.argmax(y_test, axis=1)
+    # PyTorch models only accept input in the torch.Tensor format. 
+    # If your data is in another format, it must be converted.
+    if not isinstance(X_test, torch.Tensor):
+        X_test = torch.tensor(X_test, dtype=torch.float32)
+    if not isinstance(y_test, torch.Tensor):
+        y_test = torch.tensor(y_test, dtype=torch.long)
 
-    # Generate a confusion matrix for the test dataset.
-    cm = tf.math.confusion_matrix(labels=y_test_integer_labels, predictions=predicted_labels)
+    # During validation, gradients aren't needed because the model isn't being updated. 
+    # This also reduces memory consumption and increases speed.
+    with torch.no_grad():
+        # Generate predictions for the test dataset.
+        predictions = model(X_test)
 
-    # Plot the confusion matrix as a heatmap.
-    plt.figure(figsize=[15, 8])
-    
+    # Determine the predicted class with the highest probability.
+    predicted_labels = torch.argmax(predictions, dim=1)
 
+    # Create the confusion matrix.
+    cm = torch.zeros(len(torch.unique(y_test)), len(torch.unique(y_test)), dtype=torch.int32)
+    for true_label, pred_label in zip(y_test, predicted_labels):
+        cm[true_label, pred_label] += 1
+
+    # Convert the confusion matrix to a NumPy array.
+    cm = cm.numpy()
+
+    # View Confusion Matrix.
+    plt.figure(figsize=(15, 8))
     sn.heatmap(cm, annot=True, fmt="d", annot_kws={"size": 14})
     plt.xlabel("Predicted")
     plt.ylabel("Truth")

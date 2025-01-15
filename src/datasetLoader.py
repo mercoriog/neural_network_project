@@ -1,6 +1,5 @@
 import numpy as np
 import tensorflow_datasets as tfds
-import tensorflow as tf
 
 def loadDataset():
     # Load the MNIST dataset (split into train and test sets)
