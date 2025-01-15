@@ -20,9 +20,6 @@ if __name__ == "__main__":
 
     print(model)
 
-    # Compile model:
-    model = compiler.modelCompile(model)
-
     # Train model:
     training_results = trainer.startTraining(model, X_train, y_train, X_valid, y_valid)
 

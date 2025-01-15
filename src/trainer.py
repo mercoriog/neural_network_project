@@ -1,11 +1,11 @@
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
-import torch.optim  # Ottimizzatore RProp
-from .plotsResults import plotResults  # Funzione per visualizzare i risultati
+import torch.optim
+from .plotsResults import plotResults
 
 def startTraining(model, X_train, y_train, X_valid, y_valid, epochs=21, batch_size=64):
-    # Converti i dati in tensori PyTorch
+    # Convert data
     X_train = torch.tensor(X_train, dtype=torch.float32)
     y_train = torch.tensor(y_train, dtype=torch.long)
     X_valid = torch.tensor(X_valid, dtype=torch.float32)
