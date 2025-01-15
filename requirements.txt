@@ -2,3 +2,5 @@ tensorflow-datasets
 tensorflow
 matplotlib
 seaborn
+torch
+torch_optim
