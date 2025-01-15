@@ -19,14 +19,19 @@ class DynamicModel(nn.Module):
         self.layers = nn.ModuleList()
         
         # Aggiungi il primo layer con input_shape
-        self.layers.append(nn.Linear(input_shape, 128))
+        self.layers.append(nn.Linear(input_shape, num_neurons))
         
         # Aggiungi i layer intermedi
-        for i in range(1, hidden_num_layers):
+        for _ in range(hidden_num_layers):
             self.layers.append(nn.Linear(num_neurons, num_neurons))
         
+        #Ultimo layer
+        self.layers.append(nn.Linear(num_neurons, 10))
+
         # Lista delle funzioni di attivazione
         self.activation_function = getFunc(func_activation)
+
+
     
     def forward(self, x):
         i = 0
@@ -35,7 +40,7 @@ class DynamicModel(nn.Module):
             if i > 0:
                 x = F.relu(x)
             elif i == (len(self.layers) - 1):
-                x = F.sigmoid(x)
+                x = F.softmax(x, dim=1)
             else:
                 x = self.activation_function(x)
         return x

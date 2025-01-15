@@ -16,7 +16,7 @@ if __name__ == "__main__":
     y_train, y_test, y_valid = dsPrep.oneHotLabelEncoding(y_train, y_test, y_valid)
 
     # Define model
-    model = compiler.DynamicModel(hidden_num_layers=1, num_neurons=64, func_activation="Relu", input_shape=X_train.shape[1])
+    model = compiler.DynamicModel(hidden_num_layers=1, num_neurons=64, func_activation="relu", input_shape=X_train.shape[1])
 
     print(model)
 
