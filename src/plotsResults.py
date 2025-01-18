@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
-def plotResults(metrics, title=None, ylabel=None, ylim=None, metric_name=None, color=None):
+def plotResults(metrics, reps, title=None, ylabel=None, ylim=None, metric_name=None, color=None):
     """
     Visualizza una o più metriche in un grafico.
 
@@ -39,12 +39,12 @@ def plotResults(metrics, title=None, ylabel=None, ylim=None, metric_name=None, c
     # Imposta i limiti degli assi
     if ylim:
         plt.ylim(ylim)
-    plt.xlim([0, 20])  # Limite fisso per l'asse x (da 0 a 20 epoch)
+    plt.xlim([0, reps])  # Limite fisso per l'asse x (da 0 a N epoch)
 
     # Personalizza i segni sull'asse x
-    ax.xaxis.set_major_locator(MultipleLocator(5))  # Segni principali ogni 5 epoch
+    ax.xaxis.set_major_locator(MultipleLocator(5))  # Segni principali ogni 5 reps
     ax.xaxis.set_major_formatter(FormatStrFormatter('%d'))  # Formato intero
-    ax.xaxis.set_minor_locator(MultipleLocator(1))  # Segni minori ogni 1 epoch
+    ax.xaxis.set_minor_locator(MultipleLocator(1))  # Segni minori ogni 1 reps
 
     # Aggiungi griglia e legenda
     plt.grid(True, which='both', linestyle='--', linewidth=0.5)  # Griglia principale e secondaria

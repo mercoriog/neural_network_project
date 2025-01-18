@@ -12,7 +12,7 @@ def startTraining(model, train_loader, valid_loader, epochs=21):
         model.parameters(),
         lr=0.01,  # Learning rate
         etas=(0.5, 1.2),  # Fattori di incremento/decremento del learning rate
-        step_sizes=(1e-06, 50)  # Limiti per la dimensione del passo
+        step_sizes=(1e-06, 10)  # Limiti per la dimensione del passo
     )
 
     # List per memorizzare i risultati
@@ -83,7 +83,7 @@ def startTraining(model, train_loader, valid_loader, epochs=21):
     }
     return training_results
 
-def showTrainingResults(training_results):
+def showTrainingResults(training_results, epochs):
     # Recupera i risultati
     train_loss = training_results["train_loss"]
     train_acc = training_results["train_accuracy"]
@@ -92,7 +92,8 @@ def showTrainingResults(training_results):
 
     # Visualizza i risultati
     plotResults(
-        [train_loss, valid_loss],
+        metrics=[train_loss, valid_loss],
+        reps=epochs,
         ylabel="Loss",
         ylim=[1.5, 2.0],
         metric_name=["Training Loss", "Validation Loss"],
@@ -100,7 +101,8 @@ def showTrainingResults(training_results):
     )
 
     plotResults(
-        [train_acc, valid_acc],
+        metrics=[train_acc, valid_acc],
+        reps=epochs,
         ylabel="Accuracy",
         ylim=[0.7, 1.0],
         metric_name=["Training Accuracy", "Validation Accuracy"],

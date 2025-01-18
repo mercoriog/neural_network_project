@@ -35,7 +35,8 @@ def predict(model, test_loader):
 def showPlotsPredict(predictions, labels, accuracies):
     # Visualizza l'andamento dell'accuratezza come grafico
     plotResults(
-        [accuracies],  # Passa la lista di accuratezze
+        metrics=[accuracies],  # Passa la lista di accuratezze
+        reps=100,
         title="Test Accuracy over Batches",
         ylabel="Accuracy",
         ylim=[0.0, 1.0],

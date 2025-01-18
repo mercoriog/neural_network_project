@@ -14,11 +14,14 @@ if __name__ == "__main__":
 
     print(model)
 
+    # Imposta epoche
+    epochs=40
+
     # Addestra il modello
-    training_results = trainer.startTraining(model, train_loader, valid_loader, epochs=21)
+    training_results = trainer.startTraining(model, train_loader, valid_loader, epochs)
 
     # Mostra i risultati dell'addestramento
-    trainer.showTrainingResults(training_results)
+    trainer.showTrainingResults(training_results, epochs)
 
     # Effettua le previsioni sul test set
     predictions, labels, accuracies = predicter.predict(model, test_loader)
