@@ -94,7 +94,7 @@ def showTrainingResults(training_results):
     plotResults(
         [train_loss, valid_loss],
         ylabel="Loss",
-        ylim=[0.0, 0.5],
+        ylim=[1.5, 2.0],
         metric_name=["Training Loss", "Validation Loss"],
         color=["g", "b"],
     )
@@ -102,7 +102,7 @@ def showTrainingResults(training_results):
     plotResults(
         [train_acc, valid_acc],
         ylabel="Accuracy",
-        ylim=[0.9, 1.0],
+        ylim=[0.7, 1.0],
         metric_name=["Training Accuracy", "Validation Accuracy"],
         color=["g", "b"],
     )
