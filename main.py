@@ -27,6 +27,8 @@ if __name__ == "__main__":
     predicter.showPlotsPredict(predictions, labels, accuracies)
 
     # Visualizza la matrice di confusione
-    confMx.confusionMatrix(model, test_loader)
+    metrics = confMx.confusionMatrix(model, test_loader)
+
+    print(metrics)
 
     print('Done.')

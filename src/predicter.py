@@ -29,7 +29,7 @@ def predict(model, test_loader):
     print(f"Test Accuracy: {accuracy:.4f}")
 
     # Restituisci le previsioni, le etichette vere, l'accuratezza complessiva e l'andamento dell'accuratezza
-    return all_predictions, all_labels, accuracy, accuracies
+    return all_predictions, all_labels, accuracies
 
 
 def showPlotsPredict(predictions, labels, accuracies):
