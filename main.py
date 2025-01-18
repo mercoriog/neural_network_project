@@ -3,7 +3,7 @@ from src import datasetLoader as dsLoad
 from src import trainer
 from src import confusionMatrix as confMx
 from src import modelCompiler as compiler
-from src import plotsResults
+
 
 if __name__ == "__main__":
     # Carica i DataLoader
