@@ -1,0 +1,3 @@
+1. Funzione per salvare in file i grafici 
+2. Funzione per salvare le metriche stampate su trminale (le print)
+3. Provare le configurazioni

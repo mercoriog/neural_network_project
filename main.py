@@ -10,7 +10,7 @@ if __name__ == "__main__":
     train_loader, valid_loader, test_loader = dsLoad.getData()
 
     # Definisci il modello
-    model = compiler.DynamicModel(hidden_num_layers=1, num_neurons=64, func_activation="relu", input_shape=784)
+    model = compiler.DynamicModel(hidden_num_layers=1, num_neurons=128, func_activation="relu", input_shape=784)
 
     print(model)
 
@@ -25,9 +25,6 @@ if __name__ == "__main__":
 
     # Effettua le previsioni sul test set
     predictions, labels, accuracies = predicter.predict(model, test_loader)
-
-    # Mostra i risultati della predict
-    predicter.showPlotsPredict(predictions, labels, accuracies)
 
     # Visualizza la matrice di confusione
     metrics = confMx.confusionMatrix(model, test_loader)
