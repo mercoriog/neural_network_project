@@ -21,17 +21,10 @@ if __name__ == "__main__":
     trainer.showTrainingResults(training_results)
 
     # Effettua le previsioni sul test set
-    predictions, labels, accuracy = predicter.predict(model, test_loader)
+    predictions, labels, accuracies = predicter.predict(model, test_loader)
 
-    # Visualizza l'accuratezza come grafico
-    plotsResults(
-        [accuracy],
-        title="Test Accuracy",
-        ylabel="Accuracy",
-        ylim=[0.0, 1.0],
-        metric_name=["Test Accuracy"],
-        color=["b"]
-    )
+    # Mostra i risultati della predict
+    predicter.showPlotsPredict(predictions, labels, accuracies)
 
     # Visualizza la matrice di confusione
     confMx.confusionMatrix(model, test_loader)
