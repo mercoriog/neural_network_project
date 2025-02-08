@@ -12,36 +12,40 @@ def getFunc(function):
     else:
         raise ValueError(f"Unsupported activation function: {function}")
 
-class DynamicModel(nn.Module):
-    def __init__(self, hidden_num_layers, num_neurons, func_activation, input_shape):
-        super(DynamicModel, self).__init__()
+# Classe per definire la rete neurale
+class NN(nn.Module):
+    def __init__(self, input_size, num_neurons, hidden_num_layers, func_activation, num_classes):
+        super(NN, self).__init__()
         
+        # Lista per memorizzare i layer
         self.layers = nn.ModuleList()
         
-        # Aggiungi il primo layer con input_shape
-        self.layers.append(nn.Linear(input_shape, num_neurons))
+        # Primo layer (input -> primo hidden layer)
+        self.layers.append(nn.Linear(input_size, num_neurons))
         
-        # Aggiungi i layer intermedi
+        # Aggiungi i layer intermedi (hidden layers)
         for _ in range(hidden_num_layers):
             self.layers.append(nn.Linear(num_neurons, num_neurons))
         
-        # Ultimo layer
-        self.layers.append(nn.Linear(num_neurons, 10))
-
+        # Ultimo layer (ultimo hidden layer -> output)
+        self.layers.append(nn.Linear(num_neurons, num_classes))
+        
         # Funzione di attivazione
         self.activation_function = getFunc(func_activation)
 
     def forward(self, x):
-        # Appiattisci l'input in un vettore 1D
+         # Appiattisci l'input in un vettore 1D
         x = x.view(x.size(0), -1)  # Forma: [batch_size, input_shape]
-        
-        # Passa attraverso i layer
+
+        # Itera sui layer e applica la funzione di attivazione
         for i, layer in enumerate(self.layers):
             x = layer(x)
-            if i < len(self.layers) - 1:  # Applica la funzione di attivazione a tutti i layer tranne l'ultimo
+            # Applica la funzione di attivazione solo ai layer nascosti
+            if i < len(self.layers) - 1:  # Non applicare alla fully connected finale
                 x = self.activation_function(x)
         
         # Applica softmax all'ultimo layer
         x = F.softmax(x, dim=1)
         
         return x
+    

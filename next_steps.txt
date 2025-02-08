@@ -1,3 +1,12 @@
-1. Funzione per salvare in file i grafici 
-2. Funzione per salvare le metriche stampate su trminale (le print)
-3. Provare le configurazioni
+1. Funzione per salvare in file i grafici:
+    1.1. Salvare in una cartella 'config_n':
+        - config_n_accuracy.png
+        - config_n_confusionMatrix.png
+        - config_n_loss.png
+        - config_n_testAccuracy.png
+
+2. Funzione per salvare le metriche stampate su terminale (le print):
+    2.1. Salvare in una cartella 'metrics_config_n' un data_ora_minuti.txt contenente il log
+
+3. Provare le configurazioni della rete neurale:
+    3.1. 

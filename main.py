@@ -10,12 +10,12 @@ if __name__ == "__main__":
     train_loader, valid_loader, test_loader = dsLoad.getData()
 
     # Definisci il modello
-    model = compiler.DynamicModel(hidden_num_layers=1, num_neurons=128, func_activation="relu", input_shape=784)
+    model = compiler.NN(input_size=784, num_neurons=64, hidden_num_layers=2, func_activation="relu", num_classes=10)
 
     print(model)
 
     # Imposta epoche
-    epochs=40
+    epochs=30
 
     # Addestra il modello
     training_results = trainer.startTraining(model, train_loader, valid_loader, epochs)
