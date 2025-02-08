@@ -1,0 +1,7 @@
+Rprop è progettato per funzionare con batch completi (full-batch training) e non è adatto all'addestramento con mini-batch.
+
+Rprop non considera la magnitudine del gradiente, ma solo il segno del gradiente per aggiornare i pesi.
+
+Se usi mini-batch, i gradienti possono variare molto tra i batch, causando oscillazioni e rendendo l’algoritmo instabile.
+
+Rprop è stato sviluppato per il batch gradient descent, dove tutti i dati sono usati per calcolare un solo aggiornamento per epoca.
