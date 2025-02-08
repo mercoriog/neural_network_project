@@ -3,19 +3,23 @@ import torch.nn as nn
 import torch.optim
 from .plotsResults import plotResults
 
-def startTraining(model, train_loader, valid_loader, epochs=21):
+def startTraining(model, train_loader, valid_loader, epochs):
+    # Verifica che i DataLoader abbiano un solo batch
+    assert len(train_loader) == 1, "Errore: train_loader deve avere un solo batch per epoca con Rprop!"
+    assert len(valid_loader) == 1, "Errore: valid_loader deve avere un solo batch per epoca con Rprop!"
+
     # Definisci la funzione di loss
-    criterion = nn.CrossEntropyLoss()  # Usa CrossEntropyLoss per problemi di classificazione
+    criterion = nn.CrossEntropyLoss()
 
     # Usa RProp come ottimizzatore con parametri personalizzati
     optimizer = torch.optim.Rprop(
         model.parameters(),
-        lr=0.01,  # Learning rate
-        etas=(0.5, 1.2),  # Fattori di incremento/decremento del learning rate
-        step_sizes=(1e-06, 10)  # Limiti per la dimensione del passo
+        lr=0.01,
+        etas=(0.5, 1.2),
+        step_sizes=(1e-06, 10)
     )
 
-    # List per memorizzare i risultati
+    # Liste per memorizzare i risultati
     train_loss_history = []
     train_acc_history = []
     valid_loss_history = []
@@ -23,58 +27,54 @@ def startTraining(model, train_loader, valid_loader, epochs=21):
 
     # Ciclo di addestramento
     for epoch in range(epochs):
-        model.train()  # Imposta il modello in modalità di training
+        model.train()
         running_loss = 0.0
         correct_train = 0
         total_train = 0
 
-        # Training loop
+        # Training loop (un solo batch!)
         for inputs, labels in train_loader:
-            optimizer.zero_grad()  # Azzera i gradienti
-            outputs = model(inputs)  # Forward pass
-            loss = criterion(outputs, labels)  # Calcola la loss
-            loss.backward()  # Backward pass
-            optimizer.step()  # Aggiorna i pesi con RProp
+            optimizer.zero_grad()
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
 
-            running_loss += loss.item()
+            running_loss = loss.item()  # Ora non serve dividere per len(train_loader)
             _, predicted = torch.max(outputs.data, 1)
-            total_train += labels.size(0)
-            correct_train += (predicted == labels).sum().item()
+            total_train = labels.size(0)
+            correct_train = (predicted == labels).sum().item()
 
-        # Calcola la loss e l'accuracy per il training
-        train_loss = running_loss / len(train_loader)
+        train_loss = running_loss
         train_acc = correct_train / total_train
         train_loss_history.append(train_loss)
         train_acc_history.append(train_acc)
 
         # Validazione
-        model.eval()  # Imposta il modello in modalità di valutazione
+        model.eval()
         valid_loss = 0.0
         correct_valid = 0
         total_valid = 0
 
-        with torch.no_grad():  # Disabilita il calcolo dei gradienti per la validazione
-            for inputs, labels in valid_loader:
+        with torch.no_grad():
+            for inputs, labels in valid_loader:  # Un solo batch anche qui!
                 outputs = model(inputs)
                 loss = criterion(outputs, labels)
-                valid_loss += loss.item()
-                _, predicted = torch.max(outputs.data, 1)
-                total_valid += labels.size(0)
-                correct_valid += (predicted == labels).sum().item()
 
-        # Calcola la loss e l'accuracy per la validazione
-        valid_loss /= len(valid_loader)
+                valid_loss = loss.item()  # Ora non serve dividere per len(valid_loader)
+                _, predicted = torch.max(outputs.data, 1)
+                total_valid = labels.size(0)
+                correct_valid = (predicted == labels).sum().item()
+
         valid_acc = correct_valid / total_valid
         valid_loss_history.append(valid_loss)
         valid_acc_history.append(valid_acc)
 
-        # Stampa i risultati per ogni epoca
         print(f"Epoch {epoch+1}/{epochs}")
         print(f"Train Loss: {train_loss:.4f}, Train Accuracy: {train_acc:.4f}")
         print(f"Valid Loss: {valid_loss:.4f}, Valid Accuracy: {valid_acc:.4f}")
         print("-" * 20)
 
-    # Restituisci i risultati
     training_results = {
         "train_loss": train_loss_history,
         "train_accuracy": train_acc_history,

@@ -72,12 +72,12 @@ def getData():
     valid_dataset = TensorDataset(X_valid, Y_valid)
     test_dataset = TensorDataset(X_test, Y_test)
 
-    # Crea i DataLoader per ogni dataset con batch_size=64
+    # Crea i DataLoader con un solo batch (batch_size = numero totale di campioni)
     # Il set di training ha shuffle=True per mescolare i dati ad ogni epoca
     # Il set di validazione e test non vengono mescolati (shuffle=False)
-    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-    valid_loader = DataLoader(valid_dataset, batch_size=64, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=len(train_dataset), shuffle=True)
+    valid_loader = DataLoader(valid_dataset, batch_size=len(valid_dataset), shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=len(test_dataset), shuffle=False)
 
     # Restituisce i DataLoader per training, validazione e test
     return train_loader, valid_loader, test_loader
