@@ -82,3 +82,29 @@ def startTraining(model, train_loader, valid_loader, epochs):
         "valid_accuracy": valid_acc_history,
     }
     return training_results
+
+def showTrainingResults(training_results, epochs):
+    # Recupera i risultati
+    train_loss = training_results["train_loss"]
+    train_acc = training_results["train_accuracy"]
+    valid_loss = training_results["valid_loss"]
+    valid_acc = training_results["valid_accuracy"]
+
+    # Visualizza i risultati
+    plotResults(
+        metrics=[train_loss, valid_loss],
+        reps=epochs,
+        ylabel="Loss",
+        ylim=[1.5, 2.0],
+        metric_name=["Training Loss", "Validation Loss"],
+        color=["g", "b"],
+    )
+
+    plotResults(
+        metrics=[train_acc, valid_acc],
+        reps=epochs,
+        ylabel="Accuracy",
+        ylim=[0.7, 1.0],
+        metric_name=["Training Accuracy", "Validation Accuracy"],
+        color=["g", "b"],
+    )
