@@ -3,8 +3,7 @@ import torch.nn as nn
 import torch.optim
 from .plotsResults import plotResults
 
-
-def startTraining(model, train_loader, valid_loader, epochs):
+def startTraining(model, train_loader, valid_loader, epochs=21):
     # Definisci la funzione di loss
     criterion = nn.CrossEntropyLoss()  # Usa CrossEntropyLoss per problemi di classificazione
 
@@ -29,22 +28,18 @@ def startTraining(model, train_loader, valid_loader, epochs):
         correct_train = 0
         total_train = 0
 
-        # Training loop con indice del batch
-        for batch_idx, (data, targets) in enumerate(train_loader):
+        # Training loop
+        for inputs, labels in train_loader:
             optimizer.zero_grad()  # Azzera i gradienti
-            outputs = model(data)  # Forward pass
-            loss = criterion(outputs, targets)  # Calcola la loss
+            outputs = model(inputs)  # Forward pass
+            loss = criterion(outputs, labels)  # Calcola la loss
             loss.backward()  # Backward pass
             optimizer.step()  # Aggiorna i pesi con RProp
 
             running_loss += loss.item()
             _, predicted = torch.max(outputs.data, 1)
-            total_train += targets.size(0)
-            correct_train += (predicted == targets).sum().item()
-
-            # Opzionale: Stampa aggiornamenti per batch specifici
-            if (batch_idx + 1) % 100 == 0:  # Stampa ogni 100 batch
-                print(f"Epoch [{epoch+1}/{epochs}], Batch [{batch_idx+1}/{len(train_loader)}], Loss: {loss.item():.4f}")
+            total_train += labels.size(0)
+            correct_train += (predicted == labels).sum().item()
 
         # Calcola la loss e l'accuracy per il training
         train_loss = running_loss / len(train_loader)
@@ -59,13 +54,13 @@ def startTraining(model, train_loader, valid_loader, epochs):
         total_valid = 0
 
         with torch.no_grad():  # Disabilita il calcolo dei gradienti per la validazione
-            for data, targets in valid_loader:
-                outputs = model(data)
-                loss = criterion(outputs, targets)
+            for inputs, labels in valid_loader:
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
                 valid_loss += loss.item()
                 _, predicted = torch.max(outputs.data, 1)
-                total_valid += targets.size(0)
-                correct_valid += (predicted == targets).sum().item()
+                total_valid += labels.size(0)
+                correct_valid += (predicted == labels).sum().item()
 
         # Calcola la loss e l'accuracy per la validazione
         valid_loss /= len(valid_loader)
@@ -87,29 +82,3 @@ def startTraining(model, train_loader, valid_loader, epochs):
         "valid_accuracy": valid_acc_history,
     }
     return training_results
-
-
-def showTrainingResults(training_results, epochs):
-    # Recupera i risultati
-    train_loss = training_results["train_loss"]
-    train_acc = training_results["train_accuracy"]
-    valid_loss = training_results["valid_loss"]
-    valid_acc = training_results["valid_accuracy"]
-
-    # Visualizza i risultati
-    plotResults(
-        metrics=[train_loss, valid_loss],
-        reps=epochs,
-        ylabel="Loss",
-        ylim=[1.5, 2.0],
-        metric_name=["Training Loss", "Validation Loss"],
-        color=["g", "b"],
-    )
-    plotResults(
-        metrics=[train_acc, valid_acc],
-        reps=epochs,
-        ylabel="Accuracy",
-        ylim=[0.7, 1.0],
-        metric_name=["Training Accuracy", "Validation Accuracy"],
-        color=["g", "b"],
-    )
