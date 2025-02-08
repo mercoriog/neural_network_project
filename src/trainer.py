@@ -14,9 +14,9 @@ def startTraining(model, train_loader, valid_loader, epochs):
     # Usa RProp come ottimizzatore con parametri personalizzati
     optimizer = torch.optim.Rprop(
         model.parameters(),
-        lr=0.01,
-        etas=(0.5, 1.2),
-        step_sizes=(1e-06, 10)
+        # lr=0.01,
+        # etas=(0.5, 1.2),
+        # step_sizes=(1e-06, 10)
     )
 
     # Liste per memorizzare i risultati
@@ -95,7 +95,7 @@ def showTrainingResults(training_results, epochs):
         metrics=[train_loss, valid_loss],
         reps=epochs,
         ylabel="Loss",
-        ylim=[1.5, 2.0],
+        ylim=[0.0, 3.5],
         metric_name=["Training Loss", "Validation Loss"],
         color=["g", "b"],
     )
@@ -104,7 +104,7 @@ def showTrainingResults(training_results, epochs):
         metrics=[train_acc, valid_acc],
         reps=epochs,
         ylabel="Accuracy",
-        ylim=[0.7, 1.0],
+        ylim=[0.0, 1.0],
         metric_name=["Training Accuracy", "Validation Accuracy"],
         color=["g", "b"],
     )
