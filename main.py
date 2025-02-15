@@ -4,9 +4,9 @@ from src import trainer
 from src import confusionMatrix as confMx
 from src import modelCompiler as compiler
 from src import logPrinter
+import os
 
 if __name__ == "__main__":
-    
     # Richiesta dei parametri all'utente tramite input da tastiera
     input_size = 784
     num_neurons = int(input("Inserisci il numero di neuroni per strato nascosto: "))
@@ -18,8 +18,14 @@ if __name__ == "__main__":
     # Crea il basename per salvare i log
     basename = logPrinter.createBasename(func_activation, hidden_num_layers, num_neurons, epochs)
 
+    # Creo il nome del percorso di salvataggio
+    save_path = os.path.join("out", basename)
+
+    # Creo la cartella
+    os.makedirs(save_path, exist_ok=True)
+
     # Creo il filename per i log testuali
-    filename_txt = f"{basename}.txt"
+    filename_txt = os.path.join(save_path, f"log_{basename}.txt")
 
     # Inizializzo il logPrinter
     log_file, stdout_originale = logPrinter.initLogger(filename_txt)

@@ -21,7 +21,7 @@ def createBasename(act_func, num_layer, num_neurons, num_epochs):
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     
     # Creo il nome del file con il timestamp
-    basename = f"log_F{act_func}_L{num_layer}_N{num_neurons}_E{num_epochs}_T{timestamp}"
+    basename = f"F{act_func}_L{num_layer}_N{num_neurons}_E{num_epochs}_T{timestamp}"
 
     return basename    
 
