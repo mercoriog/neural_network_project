@@ -3,19 +3,37 @@ from src import datasetLoader as dsLoad
 from src import trainer
 from src import confusionMatrix as confMx
 from src import modelCompiler as compiler
-
+from src import logPrinter
 
 if __name__ == "__main__":
+    
+    input_size=784
+    num_neurons=128
+    hidden_num_layers=1
+    func_activation="relu"
+    num_classes=10
+    epochs=40
+
+    # Crea il basename per salvare i log
+    basename = logPrinter.createBasename(func_activation, hidden_num_layers, num_neurons, epochs)
+
+    # Creo il filename per i log testuali
+    filename_txt = f"{basename}.txt"
+
+    # Inizializzo il logPrinter
+    log_file, stdout_originale = logPrinter.initLogger(filename_txt)
+
+    # Stampo la configurazione iniziale
+    print(f"Activation Function: {func_activation}\nHidden Layers: {hidden_num_layers}\nInternal Neurons: {num_neurons}\nEpochs: {epochs}")
+
     # Carica i DataLoader
     train_loader, valid_loader, test_loader = dsLoad.getData()
 
     # Definisci il modello
-    model = compiler.NN(input_size=784, num_neurons=128, hidden_num_layers=1, func_activation="relu", num_classes=10)
+    model = compiler.NN(input_size, num_neurons, hidden_num_layers, func_activation, num_classes)
 
+    # Stampo il modello
     print(model)
-
-    # Imposta epoche
-    epochs=40
 
     # Addestra il modello
     training_results = trainer.startTraining(model, train_loader, valid_loader, epochs)
@@ -32,3 +50,5 @@ if __name__ == "__main__":
     print(metrics)
 
     print('Done.')
+
+    logPrinter.closeLogger(log_file, stdout_originale)
