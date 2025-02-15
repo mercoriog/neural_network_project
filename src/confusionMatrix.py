@@ -94,7 +94,7 @@ def calculate_metrics(cm):
             "True Negatives": TN,
         }
 
-    # Global metrics
+    # Calcola le Global metrics
     accuracy = total_TP / cm.sum() if cm.sum() > 0 else 0
     macro_precision = np.mean([metrics[f"Class {i}"]["Precision"] for i in range(num_classes)])
     macro_recall = np.mean([metrics[f"Class {i}"]["Recall"] for i in range(num_classes)])

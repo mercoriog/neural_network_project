@@ -5,16 +5,20 @@ def predict(model, test_loader):
     """
     Effettua previsioni sul test set utilizzando il modello addestrato e restituisce l'andamento dell'accuratezza.
     """
+    # Imposta il modello in modalità valutazione
     model.eval()
     all_predictions = []
     all_labels = []
-    accuracies = []  # Lista per memorizzare l'accuratezza per ogni batch
+    accuracies = []  
 
+    # Disabilita il calcolo del gradiente per ridurre il consumo di memoria e velocizzare i calcoli
     with torch.no_grad():
         for inputs, labels in test_loader:
+            # Utilizza il modello per effettuare le predizioni
             outputs = model(inputs)
             _, predicted = torch.max(outputs, 1)
 
+            # Converti i risultati in formato lista
             all_predictions.extend(predicted.tolist())
             all_labels.extend(labels.tolist())
 

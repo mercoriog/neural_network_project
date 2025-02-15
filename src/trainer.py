@@ -32,7 +32,7 @@ def startTraining(model, train_loader, valid_loader, epochs):
         correct_train = 0
         total_train = 0
 
-        # Training loop (un solo batch!)
+        # Training loop (un solo batch)
         for inputs, labels in train_loader:
             optimizer.zero_grad()
             outputs = model(inputs)
@@ -40,28 +40,35 @@ def startTraining(model, train_loader, valid_loader, epochs):
             loss.backward()
             optimizer.step()
 
-            running_loss = loss.item()  # Ora non serve dividere per len(train_loader)
+            running_loss = loss.item()  
             _, predicted = torch.max(outputs.data, 1)
             total_train = labels.size(0)
             correct_train = (predicted == labels).sum().item()
 
+        # Calcolo della loss e della accuracy
         train_loss = running_loss
         train_acc = correct_train / total_train
         train_loss_history.append(train_loss)
         train_acc_history.append(train_acc)
 
-        # Validazione
+        # Imposta il modello in modalità validazione
         model.eval()
         valid_loss = 0.0
         correct_valid = 0
         total_valid = 0
 
+        # Disabilita il calcolo del gradiente per ridurre il consumo di memoria e velocizzare i calcoli
+        # Questo è utile durante la fase di validazione o test, poiché non aggiorniamo i pesi del modello
         with torch.no_grad():
-            for inputs, labels in valid_loader:  # Un solo batch anche qui!
+            for inputs, labels in valid_loader:  
+                
+                # Genera le predizioni utilizzando il modello
                 outputs = model(inputs)
+
+                # Calcola loss
                 loss = criterion(outputs, labels)
 
-                valid_loss = loss.item()  # Ora non serve dividere per len(valid_loader)
+                valid_loss = loss.item()  
                 _, predicted = torch.max(outputs.data, 1)
                 total_valid = labels.size(0)
                 correct_valid = (predicted == labels).sum().item()
@@ -70,11 +77,13 @@ def startTraining(model, train_loader, valid_loader, epochs):
         valid_loss_history.append(valid_loss)
         valid_acc_history.append(valid_acc)
 
+        # Stampa info utili dell'addestramento
         print(f"Epoch {epoch+1}/{epochs}")
         print(f"Train Loss: {train_loss:.4f}, Train Accuracy: {train_acc:.4f}")
         print(f"Valid Loss: {valid_loss:.4f}, Valid Accuracy: {valid_acc:.4f}")
         print("-" * 20)
 
+    # Salva i risultati
     training_results = {
         "train_loss": train_loss_history,
         "train_accuracy": train_acc_history,

@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+# Restituisce la funzione di attivazione da utilizzare
 def getFunc(function):
     if function == "relu":
         return F.relu
