@@ -7,12 +7,13 @@ from src import logPrinter
 
 if __name__ == "__main__":
     
-    input_size=784
-    num_neurons=128
-    hidden_num_layers=1
-    func_activation="relu"
-    num_classes=10
-    epochs=40
+    # Richiesta dei parametri all'utente tramite input da tastiera
+    input_size = 784
+    num_neurons = int(input("Inserisci il numero di neuroni per strato nascosto: "))
+    hidden_num_layers = int(input("Inserisci il numero di strati nascosti: "))
+    func_activation = input("Inserisci la funzione di attivazione (relu/leaky_relu/tanh): ")
+    num_classes = 10
+    epochs = int(input("Inserisci il numero di epoche di addestramento: "))
 
     # Crea il basename per salvare i log
     basename = logPrinter.createBasename(func_activation, hidden_num_layers, num_neurons, epochs)
