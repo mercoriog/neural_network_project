@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
-def plotResults(metrics, reps, title=None, ylabel=None, ylim=None, metric_name=None, color=None):
+def plotResults(metrics, reps, title=None, ylabel=None, ylim=None, metric_name=None, color=None, image = None):
     """
     Visualizza una o più metriche in un grafico.
 
@@ -51,6 +51,7 @@ def plotResults(metrics, reps, title=None, ylabel=None, ylim=None, metric_name=N
     if metric_name:
         plt.legend()
 
-    # Mostra il grafico
+    # Mostra e Salva il grafico
+    plt.savefig(image)
     plt.show()
     plt.close()

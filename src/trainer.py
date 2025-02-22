@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.optim
 from .plotsResults import plotResults
+import matplotlib.pyplot as plt
+import os
 
 def startTraining(model, train_loader, valid_loader, epochs):
     # Verifica che i DataLoader abbiano un solo batch
@@ -92,7 +94,7 @@ def startTraining(model, train_loader, valid_loader, epochs):
     }
     return training_results
 
-def showTrainingResults(training_results, epochs):
+def showTrainingResults(training_results, epochs, filename_graph_loss, filename_graph_accuracy):
     # Recupera i risultati
     train_loss = training_results["train_loss"]
     train_acc = training_results["train_accuracy"]
@@ -107,6 +109,7 @@ def showTrainingResults(training_results, epochs):
         ylim=[0.0, 3.5],
         metric_name=["Training Loss", "Validation Loss"],
         color=["g", "b"],
+        image = filename_graph_loss,
     )
 
     plotResults(
@@ -116,4 +119,5 @@ def showTrainingResults(training_results, epochs):
         ylim=[0.0, 1.0],
         metric_name=["Training Accuracy", "Validation Accuracy"],
         color=["g", "b"],
+        image = filename_graph_accuracy,
     )

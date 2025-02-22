@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sn
 
-def confusionMatrix(model, test_loader):
+def confusionMatrix(model, test_loader, filename_graph_matrix):
     """
     Calcola e visualizza la matrice di confusione per un modello su un dataset di test.
     
@@ -41,12 +41,13 @@ def confusionMatrix(model, test_loader):
 
     metrics = calculate_metrics(cm)
 
-    # Visualizza la matrice di confusione
+    # Visualizza e Salva la matrice di confusione
     plt.figure(figsize=(15, 8))
     sn.heatmap(cm, annot=True, fmt="d", annot_kws={"size": 14}, cmap="Blues")
     plt.xlabel("Predicted")
     plt.ylabel("Truth")
     plt.title("Confusion Matrix")
+    plt.savefig(filename_graph_matrix)
     plt.show()
 
 

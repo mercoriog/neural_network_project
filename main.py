@@ -27,6 +27,15 @@ if __name__ == "__main__":
     # Creo il filename per i log testuali
     filename_txt = os.path.join(save_path, f"log_{basename}.txt")
 
+    # Creo il filename per il grafico loss
+    filename_graph_loss = os.path.join(save_path, f"Loss_{basename}.png")
+
+    # Creo il filename per il grafico accuracy
+    filename_graph_accuracy = os.path.join(save_path, f"Accuracy_{basename}.png")
+
+    # Creo il filename per il grafico matrix
+    filename_graph_matrix = os.path.join(save_path, f"Matrix_{basename}.png")
+
     # Inizializzo il logPrinter
     log_file, stdout_originale = logPrinter.initLogger(filename_txt)
 
@@ -46,13 +55,13 @@ if __name__ == "__main__":
     training_results = trainer.startTraining(model, train_loader, valid_loader, epochs)
 
     # Mostra i risultati dell'addestramento
-    trainer.showTrainingResults(training_results, epochs)
+    trainer.showTrainingResults(training_results, epochs, filename_graph_loss, filename_graph_accuracy)
 
     # Effettua le previsioni sul test set
     predictions, labels, accuracies = predicter.predict(model, test_loader)
 
     # Visualizza la matrice di confusione
-    metrics = confMx.confusionMatrix(model, test_loader)
+    metrics = confMx.confusionMatrix(model, test_loader, filename_graph_matrix)
 
     print(metrics)
 
