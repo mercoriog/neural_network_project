@@ -46,7 +46,7 @@ class NN(nn.Module):
                 x = self.activation_function(x)
         
         # Applica softmax all'ultimo layer
-        x = F.softmax(x, dim=1)
+        #x = F.softmax(x, dim=1)
         
         return x
     

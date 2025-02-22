@@ -27,6 +27,12 @@ def startTraining(model, train_loader, valid_loader, epochs):
     valid_loss_history = []
     valid_acc_history = []
 
+    # Parametri Early Stopping
+    patience = 6  # Numero di epoche senza miglioramenti prima di fermare
+    best_valid_loss = float("inf")  # Inizializza con un valore molto alto
+    counter = 0  # Contatore delle epoche senza miglioramenti
+
+
     # Ciclo di addestramento
     for epoch in range(epochs):
         model.train()
@@ -84,6 +90,16 @@ def startTraining(model, train_loader, valid_loader, epochs):
         print(f"Train Loss: {train_loss:.4f}, Train Accuracy: {train_acc:.4f}")
         print(f"Valid Loss: {valid_loss:.4f}, Valid Accuracy: {valid_acc:.4f}")
         print("-" * 20)
+
+        # **Early Stopping**
+        if valid_loss < best_valid_loss:
+            best_valid_loss = valid_loss
+            counter = 0  # Reset del contatore
+        else:
+            counter += 1
+            if counter >= patience:
+                print(f"Early stopping at epoch {epoch+1}")
+                break
 
     # Salva i risultati
     training_results = {
