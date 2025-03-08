@@ -1,0 +1,61 @@
+Scaletta Presentazione - Analisi di una Rete Neurale sul Dataset MNIST
+1. Introduzione al Progetto
+Presentazione del progetto e del team (se applicabile)
+Obiettivo dell’analisi
+Scelta del dataset MNIST
+Struttura generale del lavoro
+2. Struttura della Rete Neurale
+Numero di layer nascosti (da 1 a 5)
+Numero di nodi per layer (64, 128, 256)
+Funzioni di attivazione testate (ReLU, Leaky ReLU, Tanh)
+Algoritmo di ottimizzazione utilizzato (Rprop)
+3. Workflow dell'Applicazione Python
+Selezione della configurazione iniziale
+Estrazione e suddivisione del dataset (train, validation, test)
+Implementazione e addestramento della rete
+Valutazione delle performance e generazione dei grafici
+Organizzazione e salvataggio dei risultati
+4. KPI Analizzati
+Accuracy e Loss
+Confusion Matrix
+Precision, Recall, F1-score
+Tempo di addestramento e altre metriche rilevanti
+5. Analisi dei Risultati
+Confronto tra diverse funzioni di attivazione
+Impatto del numero di layer sulla performance
+Influenza del numero di nodi interni
+Pattern osservati nei grafici di training e testing
+6. Conclusioni e Osservazioni
+Configurazioni migliori in termini di performance
+Trade-off tra complessità della rete e risultati ottenuti
+Limitazioni dell’analisi e possibili sviluppi futuri
+7. Domande e Discussione
+Spazio per eventuali domande
+Condivisione di spunti per approfondimenti futuri
+
+
+Esempi di pattern osservabili:
+Convergenza dell’errore (Loss Trend)
+
+L’errore diminuisce progressivamente o si stabilizza dopo un certo numero di epoche?
+Si osservano oscillazioni o instabilità nell’errore?
+Alcune configurazioni impiegano più epoche per convergere rispetto ad altre?
+Accuracy su training e test set
+
+L’accuratezza migliora costantemente o si stabilizza rapidamente?
+Si nota overfitting (alta accuracy sul training set ma bassa sul test set)?
+Alcune funzioni di attivazione portano a un'accuracy più alta rispetto ad altre?
+Differenze tra funzioni di attivazione
+
+La ReLU converge più velocemente della tanh?
+La leaky ReLU aiuta ad evitare il problema dei gradienti nulli rispetto alla ReLU?
+Quale funzione di attivazione offre la migliore generalizzazione sul test set?
+Effetto del numero di layer e nodi
+
+Più strati migliorano realmente le prestazioni o introducono problemi di overfitting?
+Aumentare il numero di nodi per layer porta benefici evidenti o solo un maggiore costo computazionale?
+C’è una combinazione ottimale tra numero di layer e nodi che garantisce il miglior compromesso tra accuratezza e efficienza?
+Differenza tra training e validation loss
+
+La validation loss segue l’andamento della training loss o diverge indicando overfitting?
+Si notano fenomeni di underfitting, con training loss alta anche dopo molte epoche?
